@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Pricing-Tables.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Pretty-Registration-Form.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
+</head>
+
+<body>
+	<nav class="navbar navbar-light navbar-expand-md">
+		<div class="container-fluid" th:if="${user}">
+	        <b class="navbar-brand">Xin chào: <span th:text="${user.getHoten()}"></span></b>
+	        <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+				<span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+			</button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="${session.linkhome}">Quay lại trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="">Cập nhật thông tin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanlytaikhoan/doimatkhau">Đổi mật khẩu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanlytaikhoan/dangxuat">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row register-form">
+        <div class="col-md-8 offset-md-2">
+            <form class="custom-form" th:action="@{/quanlytaikhoan/capnhatthongtin}" method="post">
+                <h1>Thông tin cá nhân</h1>
+                <div class="row form-group">
+                    <div class="col-sm-4 label-column"><label class="col-form-label">Họ</label></div>
+                    <div class="col-sm-6 input-column">
+						<input class="form-control" type="text" name = "ho" th:value="${user.getHo()}">
+					</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-4 label-column"><label class="col-form-label">Tên</label></div>
+                    <div class="col-sm-6 input-column">
+						<input class="form-control" type="text" name = "ten" th:value="${user.getTen()}">
+					</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-4 label-column"><label class="col-form-label">Email </label></div>
+                    <div class="col-sm-6 input-column">
+						<input class="form-control" type="email" name = "email" th:value="${user.getEmail()}">
+					</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-4 label-column"><label class="col-form-label">Số điện thoại</label></div>
+                    <div class="col-sm-6 input-column">
+						<input class="form-control" type="text" name = "sdt" th:value="${user.getSdt()}">
+					</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-4 label-column"><label class="col-form-label">Địa chỉ</label></div>
+                    <div class="col-sm-6 input-column">
+						<input class="form-control" type="text" name = "diachi" th:value="${user.getDiachi()}">
+					</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-4 label-column"><label class="col-form-label">Ngày sinh</label></div>
+                    <div class="col-sm-6 input-column">
+						<input class="form-control" type="date" name = "ngaysinh" th:value="${user.getNgaysinh()}">
+					</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-4 label-column"><label class="col-form-label">Giới tính</label></div>
+                    <div class="col-sm-6 input-column">
+                        <select class="form-control" name="gioitinh">
+					        <option value="1" th:selected="${user.getGioitinh() == 1}">Nam</option>
+					        <option value="2" th:selected="${user.getGioitinh() == 2}">Nữ</option>
+					        <option value="3" th:selected="${user.getGioitinh() == 3}">Khác</option>
+					    </select>
+                    </div>
+                </div>
+                <button class="btn btn-light submit-button" type="submit">Cập nhật</button>
+            </form>
+        </div>
+    </div>
+    <script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+
+</html>

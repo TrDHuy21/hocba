@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Pricing-Tables.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md">
+		<div class="container-fluid">
+	        <b class="navbar-brand">Xin chào: <span th:text="${phuhuynh.getHoten()}"></span></b>
+	        <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+				<span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+			</button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="">Thời khóa biểu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/phuhuynh/ketquahoctap">Kết quả học tập</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanlytaikhoan/capnhatthongtin">Quản lý tài khoản</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <ul class="nav nav-tabs">
+        <li class="nav-item" th:each="hocsinh : ${list_hocsinh}">
+			<div th:if="${hocsinh.getHocsinh_id} == ${selected_hsid}">
+				<a class="nav-link active">
+					-<span th:text="${hocsinh.getHoten()}"></span>-
+				</a>
+			</div>
+			<div div th:if="${hocsinh.getHocsinh_id} != ${selected_hsid}">
+				<a class="nav-link" th:href="@{/phuhuynh/thoikhoabieu/{hocsinhId}(hocsinhId=${hocsinh.getHocsinh_id()})}">
+					-<span th:text="${hocsinh.getHoten()}"></span>-
+				</a>
+			</div>
+		</li>
+    </ul>
+    <section class="pricing-table" th:if="${tkb_thu2}">
+        <div class="container">
+            <div class="pricing-area text-center">
+                <div class="row">
+                    <div class="col-sm-4 plan price red wow fadeInDown">
+                        <ul class="list-group">
+                            <li class="list-group-item heading">
+                                <h1>Thứ Hai</h1>
+                            </li>
+        					<li class="list-group-item" th:each="tkb : ${tkb_thu2}">
+								<span th:text="${tkb.getMonhoc_name()}"></span>
+							</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 plan price green wow fadeInDown">
+                        <ul class="list-group">
+                            <li class="list-group-item heading">
+                                <h1>Thứ Ba</h1>
+                            </li>
+        					<li class="list-group-item" th:each="tkb : ${tkb_thu3}">
+								<span th:text="${tkb.getMonhoc_name()}"></span>
+							</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 plan price yellow wow fadeInDown">
+                        <ul class="list-group">
+                            <li class="list-group-item heading">
+                                <h1>Thứ Tư</h1>
+                            </li>
+        					<li class="list-group-item" th:each="tkb : ${tkb_thu4}">
+								<span th:text="${tkb.getMonhoc_name()}"></span>
+							</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 plan price red wow fadeInDown">
+                        <ul class="list-group">
+                            <li class="list-group-item heading">
+                                <h1>Thứ Năm</h1>
+                            </li>
+        					<li class="list-group-item" th:each="tkb : ${tkb_thu5}">
+								<span th:text="${tkb.getMonhoc_name()}"></span>
+							</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 plan price green wow fadeInDown">
+                        <ul class="list-group">
+                            <li class="list-group-item heading">
+                                <h1>Thứ Sáu</h1>
+                            </li>
+        					<li class="list-group-item" th:each="tkb : ${tkb_thu6}">
+								<span th:text="${tkb.getMonhoc_name()}"></span>
+							</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 plan price yellow wow fadeInDown">
+                        <ul class="list-group">
+                            <li class="list-group-item heading">
+                                <h1>Thứ Bảy</h1>
+                            </li>
+        					<li class="list-group-item" th:each="tkb : ${tkb_thu7}">
+								<span th:text="${tkb.getMonhoc_name()}"></span>
+							</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/Pricing-Tables.js}"></script>
+</body>
+
+</html>
