@@ -42,24 +42,20 @@ public class GV_QuanLyDiem_Controller {
 
 	@GetMapping("/giaovien/quanlydiem")
 	public String quanLyDiem(HttpSession session, Model model) {
+		
+		// Kiểm tra đăng nhập
 		GiaoVienObject gv = (GiaoVienObject) session.getAttribute("current_giaovien");
 		if (gv == null)
 			return "redirect:/login";
-		List<GV_TKB_Object> list_tkb = tkbDao.getTKBbygiaovienId(gv.getGiaovien_id());
-		int n = list_tkb.size();
-		for (int i = 0; i < n - 1; i++) {
-			for (int j = i + 1; j < n; j++) {
-				if (list_tkb.get(i).getLop_id().equals(list_tkb.get(j).getLop_id())
-						&& list_tkb.get(i).getMonhoc_id().equals(list_tkb.get(j).getMonhoc_id())) {
-					list_tkb.remove(j);
-					j--;
-					n--;
-				}
-			}
-		}
+
+		// lấy dữ liệu lớp học của giáo viên
+		List<GV_TKB_Object> list_tkb = tkbDao.getLop_MonBygiaovienId(gv.getGiaovien_id());
+		
+		// chuyền dữ liệu vào font-end
 		model.addAttribute("gv", gv);
 		model.addAttribute("list_tkb", list_tkb);
 
+		// trả về client giaovien_quanlydiem_danhsanhlop.html
 		return "giaovien_quanlydiem_danhsanhlop";
 	}
 
@@ -67,9 +63,11 @@ public class GV_QuanLyDiem_Controller {
 	@GetMapping("/giaovien/quanlydiem/{lop_id}/{monhoc_id}")
 	public String quanLyDiem(HttpSession session, Model model, @PathVariable String lop_id,
 			@PathVariable String monhoc_id) {
+		// Kiểm tra đăng nhập
 		GiaoVienObject gv = (GiaoVienObject) session.getAttribute("current_giaovien");
 		if (gv == null)
 			return "redirect:/login";
+
 		List<HocSinhObject> list_hocSinh = hsDao.getListHocSinhByLopId(lop_id);
 		Map<HocSinhObject, HS_KQHT_Object> list_kqht = new LinkedHashMap<>();
 		for (HocSinhObject hs : list_hocSinh) {
@@ -80,6 +78,7 @@ public class GV_QuanLyDiem_Controller {
 			}
 
 		}
+		
 		int ki = mhDao.getMonHocById(monhoc_id).getHocKi();
 		model.addAttribute("gv", gv);
 		model.addAttribute("list_kqht", list_kqht);
@@ -91,28 +90,31 @@ public class GV_QuanLyDiem_Controller {
 	}
 
 	@PostMapping("/giaovien/capnhatdiem")
-	public ResponseEntity<String> processJSONFile(@RequestBody String jsonPayload) {
+	public ResponseEntity<String> processJSONFile(HttpSession session, @RequestBody String jsonPayload) {
+			  
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			
+
 			JsonNode jsonNode = objectMapper.readTree(jsonPayload);
 			// Truy cập vào insert, update và otherData
 			JsonNode insertJsonNode = jsonNode.get("insert");
 			JsonNode updateJsonNode = jsonNode.get("update");
 			JsonNode otherDataJsonNode = jsonNode.get("otherData");
-			
+
 			String lopId = otherDataJsonNode.get("lop_id").asText();
 			String monHocId = otherDataJsonNode.get("monHoc_id").asText();
 			int ki = otherDataJsonNode.get("ki").asInt();
-			
+
+			// chuyển dữ liệu JSON sang OBJECT
 			List<HS_KQHT_Object> listInsertKQHT = objectMapper.readValue(insertJsonNode.toString(),
-			        new TypeReference<List<HS_KQHT_Object>>() {
-			        });
-			
+					new TypeReference<List<HS_KQHT_Object>>() {
+					});
+
 			List<HS_KQHT_Object> listUpdateKQHT = objectMapper.readValue(updateJsonNode.toString(),
-			        new TypeReference<List<HS_KQHT_Object>>() {
-			        });
+					new TypeReference<List<HS_KQHT_Object>>() {
+					});
 			
+			// cập nhật vào trong cơ sở dữ liệu
 			kqhtDao.insertCapNhatDiem(listInsertKQHT, monHocId, lopId, ki);
 			kqhtDao.updateCapNhatDiem(listUpdateKQHT, monHocId, lopId, ki);
 		} catch (Exception e) {

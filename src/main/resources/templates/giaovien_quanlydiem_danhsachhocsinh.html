@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://thymeleaf.org">
 
 <head>
 	<meta charset="utf-8">
@@ -20,7 +20,8 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navcol-1">
 				<ul class="navbar-nav ms-auto">
-					<li class="nav-item" th:if="${session.list_lopcn}"><a class="nav-link" href="/giaovien/chunhiem">Lớp chủ nhiệm</a></li>
+					<li class="nav-item" th:if="${session.list_lopcn}"><a class="nav-link" href="/giaovien/chunhiem">Lớp
+							chủ nhiệm</a></li>
 					<li class="nav-item"><a class="nav-link" href="/giaovien/thoikhoabieu">Thời khóa biểu</a></li>
 					<li class="nav-item"><a class="nav-link active">Quản lý điểm</a></li>
 					<li class="nav-item"><a class="nav-link" href="/quanlytaikhoan/capnhatthongtin">Quản lý tài
@@ -95,24 +96,38 @@
 		/*]]>*/
 		var insert = new Map();
 		var update = new Map();
-		
+
 		function coThayDoi(e) {
 			let hocSinhElement = e.parentElement.parentElement;
 			let hocsinhId = hocSinhElement.querySelector('td[name="hocsinh_id"]').textContent;
-			let diemGiuaKi = hocSinhElement.querySelector('input[name="diemGiuaKi"]').value;
+			let diemGiuaKi = parseFloat(hocSinhElement.querySelector('input[name="diemGiuaKi"]').value);
 			if (diemGiuaKi === "") {
 				diemGiuaKi = -1;
 			}
-			let diem = hocSinhElement.querySelector('input[name="diem"]').value;
+			let diem = parseFloat(hocSinhElement.querySelector('input[name="diem"]').value);
 			if (diem === "") {
 				diem = -1;
 			}
 			let nhanxet = hocSinhElement.querySelector('input[name="nhanxet"]').value;
+			let xepLoai = "";
+			if (diem != -1 && diemGiuaKi != -1) {
+				tb = (diem + diemGiuaKi) / 2;
+				if (tb >= 8) {
+					xepLoai = "Tốt";
+				} else if (tb >= 6) {
+					xepLoai = "Khá";
+				} else if (tb >= 2) {
+					xepLoai = "Trung Bình"
+				} else {
+					xepLoai = "Kém";
+				}
+			}
 			let hocSinhInfo = {
 				hocSinh_id: hocsinhId,
 				diemGiuaKi: diemGiuaKi,
 				diem: diem,
-				nhanXet: nhanxet
+				nhanXet: nhanxet,
+				xepLoai: xepLoai
 			};
 			console.log(hocSinhInfo);
 			if (hocSinhElement.classList.contains("insert")) {

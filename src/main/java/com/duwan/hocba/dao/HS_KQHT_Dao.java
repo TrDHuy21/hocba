@@ -66,23 +66,11 @@ public class HS_KQHT_Dao extends JdbcDao {
 	public int insertCapNhatDiem(List<HS_KQHT_Object> listInsertKQHT, String monHocId, String lopId, int ki) {
 		System.out.println("Dang insert");
 		int kq = 0;
-		String sql = "INSERT INTO `hoc_ba_dien_tu`.`ketquahoctap` (`hocki`, `lop_id`, `hocsinh_id`, `monhoc_id`, `diemgiuaki` ,`diemcuoiki`, `nhanxetcuagv`, `xeploai`) "
+		String sql = "INSERT INTO `hoc_ba_dien_tu`.`ketquahoctap` "
+				+ "(`hocki`, `lop_id`, `hocsinh_id`, `monhoc_id`, `diemgiuaki` ,`diemcuoiki`, `nhanxetcuagv`, `xeploai`) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		List<Object[]> batchArgs = new ArrayList<>();
 		for (HS_KQHT_Object k : listInsertKQHT) {
-			System.out.println(k);
-			float diem = (k.getDiem() + k.getDiemGiuaKi())/2;
-			if (k.getDiem() == -1 || k.getDiemGiuaKi() == -1) {
-				k.setXepLoai("");
-			} else if (diem >= 8) {
-				k.setXepLoai("Tốt");
-			} else if (diem >= 6) {
-				k.setXepLoai("Khá");
-			} else if (diem >= 2) {
-				k.setXepLoai("Trung bình");
-			} else {
-				k.setXepLoai("Kém");
-			}
 			Object[] args = {ki, lopId, k.getHocSinh_id(), monHocId,
 					k.getDiemGiuaKi(), k.getDiem(), k.getNhanXet(), k.getXepLoai() };
 			batchArgs.add(args);
@@ -103,19 +91,6 @@ public class HS_KQHT_Dao extends JdbcDao {
 				+ "WHERE hocsinh_id = ? AND monhoc_id = ? AND lop_id = ? AND hocki = ?";
 		List<Object[]> batchArgs = new ArrayList<>();
 		for (HS_KQHT_Object kqht : listUpdateKQHT) {
-			System.out.println(kqht);
-			float diem = (kqht.getDiem() + kqht.getDiemGiuaKi())/2;
-			if (kqht.getDiem() == -1 || kqht.getDiemGiuaKi() == -1) {
-				kqht.setXepLoai("");
-			} else if (diem >= 8) {
-				kqht.setXepLoai("Tốt");
-			} else if (diem >= 6) {
-				kqht.setXepLoai("Khá");
-			} else if (diem >= 2) {
-				kqht.setXepLoai("Trung bình");
-			} else {
-				kqht.setXepLoai("Kém");
-			}
 			Object[] args = { kqht.getXepLoai(), kqht.getDiem(), kqht.getDiemGiuaKi(),
 					kqht.getNhanXet(), kqht.getHocSinh_id(), monHocId, lop_Id, ki};
 			batchArgs.add(args);
